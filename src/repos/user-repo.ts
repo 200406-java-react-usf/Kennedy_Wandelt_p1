@@ -26,7 +26,7 @@ export class UserRepo implements CrudRepository<User> {
     async getById(id: number): Promise<User>{
         let client: PoolClient;
         client = await connectionPool.connect();
-        let sql = 'select * from ers_users where id = $1'
+        let sql = 'select * from ers_users where ers_user_id = $1'
         let rs = await client.query(sql, [id]);
 
         return rs.rows[0];
@@ -41,8 +41,13 @@ export class UserRepo implements CrudRepository<User> {
         return rs.rows[0];
     }
 
-    deleteById(id: number): Promise<boolean>{
+    async deleteById(id: number): Promise<boolean>{
+        let client: PoolClient;
+        client = await connectionPool.connect();
+        let sql = 'delete from ers_users where ers_user_id = $1';
+        let rs = await client.query(sql, [id]);
 
+        return true;
     }
     
 }
