@@ -14,10 +14,14 @@ export class UserRepo implements CrudRepository<User> {
         let client: PoolClient;
         let sql = 'select * from ers_users';
         let rs = await client.query(sql);
-        
+
         return rs.rows;
     }
 
+    /**
+     * Get a single User by Id value
+     * @param id - number value referencing a User Id
+     */
     async getById(id: number): Promise<User>{
         let client: PoolClient;
         let sql = 'select * from ers_users where id = $1'
@@ -26,6 +30,7 @@ export class UserRepo implements CrudRepository<User> {
         return rs.rows[0];
 
     }
+    /*
 
     save(newUser: User): Promise<User>{
 
@@ -34,4 +39,5 @@ export class UserRepo implements CrudRepository<User> {
     deleteById(id: number): Promise<boolean>{
 
     }
+    */
 }
