@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {Pool} from 'pg';
+import { UserRouter } from './routers/user-router';
 
 dotenv.config();
 
@@ -18,11 +19,13 @@ export const connectionPool: Pool =  new Pool({
 const app = express();
 
 app.use('/', express.json());
+app.use('/users', UserRouter);
+
 app.get('/hello', (req, resp) => {
     resp.send('Hello World');
 })
 
-app.listen(5000, () => {
+app.listen(8080, () => {
     console.log('Application running and listening at port 8080')
 })
 
