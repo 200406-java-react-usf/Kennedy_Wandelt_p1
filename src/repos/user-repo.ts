@@ -8,7 +8,7 @@ import { connectionPool } from '..';
 export class UserRepo implements CrudRepository<User> {
     
     /**
-     * Gets all users from data base
+     * Gets all users from ers_users table of database
      */
     async getAll(): Promise<User[]>{
         let client: PoolClient;
@@ -20,7 +20,7 @@ export class UserRepo implements CrudRepository<User> {
     }
 
     /**
-     * Get a single User by Id value
+     * Get a single User by Id value from ers_users table
      * @param id - number value referencing a User Id
      */
     async getById(id: number): Promise<User>{
@@ -32,6 +32,10 @@ export class UserRepo implements CrudRepository<User> {
         return rs.rows[0];
     }
 
+    /**
+     * Add new User to ers_users table of data base
+     * @param newUser - User object to be added to the DB
+     */
     async save(newUser: User): Promise<User>{
         let client: PoolClient;
         client = await connectionPool.connect();
@@ -41,6 +45,10 @@ export class UserRepo implements CrudRepository<User> {
         return rs.rows[0];
     }
 
+    /**
+     * Delete User from ers_users table of data base
+     * @param id - id of user to be deleted
+     */
     async deleteById(id: number): Promise<boolean>{
         let client: PoolClient;
         client = await connectionPool.connect();
