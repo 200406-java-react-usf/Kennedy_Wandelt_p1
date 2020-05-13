@@ -31,7 +31,7 @@ export class UserService {
     async deleteUserById(id: number): Promise<boolean> {
         let isDeleted = await this.userRepo.deleteById(id);
 
-        return true;
+        return isDeleted;
     }
 
 }
