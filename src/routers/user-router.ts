@@ -13,5 +13,4 @@ UserRouter.get('', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-    resp.send();
 })
