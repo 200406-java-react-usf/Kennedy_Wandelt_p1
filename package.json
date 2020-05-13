@@ -23,6 +23,7 @@
   "homepage": "https://github.com/200406-java-react-usf/Kennedy_Wandelt_p1#readme",
   "devDependencies": {
     "@types/node": "^13.13.5",
+    "morgan": "^1.10.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
