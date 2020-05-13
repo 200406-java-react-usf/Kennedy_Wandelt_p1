@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import {Pool} from 'pg';
 import { UserRouter } from './routers/user-router';
 import { corsFilter } from './middleware/cors-filter';
-
+import { ReimbRouter } from './routers/reimb-router';
 dotenv.config();
 
 export const connectionPool: Pool =  new Pool({
@@ -22,6 +22,7 @@ const app = express();
 app.use(corsFilter);
 app.use('/', express.json());
 app.use('/users', UserRouter);
+app.use('/reimbursements', ReimbRouter);
 
 app.get('/hello', (req, resp) => {
     resp.send('Hello World');
