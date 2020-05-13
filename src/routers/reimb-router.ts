@@ -1,26 +1,26 @@
 import express from 'express';
 import AppConfig from '../config/app';
 
-export const UserRouter = express.Router();
+export const ReimbRouter = express.Router();
 
-const UserService = AppConfig.userService;
+const ReimbService = AppConfig.reimbService;
 
 
-UserRouter.get('', async (req, resp) => {
-    console.log('GET REQUEST RECIEVED AT /users');
+ReimbRouter.get('', async (req, resp) => {
+    console.log('GET REQUEST RECIEVED AT /reimbursements');
     try {
-        let payload = await UserService.getAllUsers();
+        let payload = await ReimbService.getAllReimbs();
         resp.status(200).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
 })
 
-UserRouter.get('/:id', async (req, resp) => {
+ReimbRouter.get('/:id', async (req, resp) => {
     let id = +req.params.id;
-    console.log('GET REQUEST RECIEVED AT /users/' + id);
+    console.log('GET REQUEST RECIEVED AT /reimbursements/' + id);
     try {
-        let payload = await UserService.getUserById(id);
+        let payload = await ReimbService.getReimbById(id);
         resp.status(200).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);        
@@ -28,22 +28,22 @@ UserRouter.get('/:id', async (req, resp) => {
 })
 
 
-UserRouter.post('', async (req, resp) => {
-    console.log('POST REQUEST RECIEVED AT /users');
+ReimbRouter.post('', async (req, resp) => {
+    console.log('POST REQUEST RECIEVED AT /reimbursements');
     console.log(req.body);
     try {
-        let payload = await UserService.addNewUser(req.body);
+        let payload = await ReimbService.addNewReimb(req.body);
         resp.status(201).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
 })
 
-UserRouter.delete('', async (req, resp) => {
-    console.log('DELETE REQUEST RECIEVED AT /users');
+ReimbRouter.delete('', async (req, resp) => {
+    console.log('DELETE REQUEST RECIEVED AT /reimbursements');
     console.log(req.body);
     try {
-        let payload = await UserService.deleteUserById(req.body);
+        let payload = await ReimbService.deleteReimbById(req.body);
         resp.status(204).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
