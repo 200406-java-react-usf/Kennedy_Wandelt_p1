@@ -13,7 +13,25 @@ export class UserService {
         if(users.length === 0){
             throw new ResourceNotFoundError('No users found.')
         }
-        return(users);
+        return users;
+    }
+
+    async getUserById(id: number): Promise<User> {
+        let user = await this.userRepo.getById(id);
+
+        return user;
+    }
+
+    async addNewUser(newUser: User): Promise<User> {
+        let user = await this.userRepo.save(newUser);
+
+        return user;
+    }
+
+    async deleteUserById(id: number): Promise<boolean> {
+        let isDeleted = await this.userRepo.deleteById(id);
+
+        return true;
     }
 
 }

@@ -77,6 +77,5 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         } catch (e) {
             throw new InternalServerError('Error during deleteById method in ReimbRepo');
         }
-    }
-    
+    }    
 }
