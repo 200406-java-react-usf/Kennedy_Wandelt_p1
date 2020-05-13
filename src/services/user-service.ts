@@ -34,4 +34,12 @@ export class UserService {
         return isDeleted;
     }
 
+    async authUser(username: string, password: string): Promise<User>{
+        let authUser: User;
+        
+        authUser = await this.userRepo.getUserByCreds(username, password);
+
+        return (authUser);
+    
+    }
 }
