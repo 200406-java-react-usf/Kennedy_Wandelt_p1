@@ -29,7 +29,7 @@ export class UserRepo implements CrudRepository<User> {
         let client: PoolClient;
         try{
             client = await connectionPool.connect();
-            let sql = 'select * from ers_users';
+            let sql = `${this.baseQuery}`;
             let rs = await client.query(sql);
 
             return rs.rows;
@@ -47,7 +47,7 @@ export class UserRepo implements CrudRepository<User> {
         try{
             let client: PoolClient;
             client = await connectionPool.connect();
-            let sql = 'select * from ers_users where ers_user_id = $1'
+            let sql = `${this.baseQuery} where ers_user_id = $1`
             let rs = await client.query(sql, [id]);
 
             return rs.rows[0];
