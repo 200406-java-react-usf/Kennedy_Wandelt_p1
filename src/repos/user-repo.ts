@@ -8,6 +8,19 @@ import { InternalServerError} from '../error/error';
 
 export class UserRepo implements CrudRepository<User> {
     
+    baseQuery = `
+        select
+            eu.id, 
+            eu.username, 
+            eu.password, 
+            eu.first_name,
+            eu.last_name,
+            eu.email,
+            eur.name as role_name
+        from ers_users eu
+        join ers_user_roles eur
+        on eu.user_role_id = eur.role_id
+    `;
     
     /**
      * Gets all users from ers_users table of database
@@ -83,7 +96,7 @@ export class UserRepo implements CrudRepository<User> {
         try {
             let client: PoolClient;
             client = await connectionPool.connect();
-            let sql = 'select * from ers_users where username = $1 and password = $2';
+            let sql = `${this.baseQuery} where eu.username = $1 and eu.password = $2`;
             let rs = await client.query(sql, [un, pass]);
 
             return rs.rows[0];

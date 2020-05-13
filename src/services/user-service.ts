@@ -40,6 +40,5 @@ export class UserService {
         authUser = await this.userRepo.getUserByCreds(username, password);
 
         return (authUser);
-    
     }
 }
