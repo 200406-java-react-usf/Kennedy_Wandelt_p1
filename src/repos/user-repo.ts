@@ -78,5 +78,18 @@ export class UserRepo implements CrudRepository<User> {
             throw new InternalServerError('Error during deleteById method in UserRepo');
         }
     }
+
+    async getUserByCreds(un: string, pass: string): Promise<User> {
+        try {
+            let client: PoolClient;
+            client = await connectionPool.connect();
+            let sql = 'select * from ers_users where username = $1 and password = $2';
+            let rs = await client.query(sql, [un, pass]);
+
+            return rs.rows[0];
+        } catch (e) {
+            throw new Error('Error during getUserByCreds method in UserRepo');
+        }
+    }
     
 }
