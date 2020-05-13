@@ -3,14 +3,15 @@ import AppConfig from '../config/app';
 
 export const UserRouter = express.Router();
 
-const userService = AppConfig.userService;
+const UserService = AppConfig.userService;
 
-    UserRouter.get('', async (req, resp) => {
-        try {
-            let payload = await userService.getAllUsers();
-            resp.status(200).json(payload);
-        } catch (e) {
-            resp.status(e.statusCode).json(e);
-        }
-        resp.send();
-    })
+
+UserRouter.get('', async (req, resp) => {
+    try {
+        let payload = await UserService.getAllUsers();
+        resp.status(200).json(payload);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+    resp.send();
+})
