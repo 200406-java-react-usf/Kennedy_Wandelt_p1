@@ -16,7 +16,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         let client: PoolClient;
         try{
             client = await connectionPool.connect();
-            let sql = 'select * from ers_reimbursements';
+            let sql = 'select * from reimbs';
             let rs = await client.query(sql);
 
             return rs.rows;
@@ -35,7 +35,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         try{
             let client: PoolClient;
             client = await connectionPool.connect();
-            let sql = 'select * from ers_reimbursements where reimb_id = $1'
+            let sql = 'select * from reimbs where reimb_id = $1'
             let rs = await client.query(sql, [id]);
 
             return rs.rows[0];
@@ -87,7 +87,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         try {
             let client: PoolClient;
             client = await connectionPool.connect();
-            let sql = '';
+            let sql = 'select * from reimbs where author_id = $1';
             let rs = await client.query(sql, [uId]);
 
             return rs.rows;
