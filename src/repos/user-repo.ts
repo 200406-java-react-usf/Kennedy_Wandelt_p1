@@ -6,6 +6,7 @@ import { InternalServerError} from '../error/error';
 
 
 
+
 export class UserRepo implements CrudRepository<User> {
     
     /**
@@ -92,7 +93,21 @@ export class UserRepo implements CrudRepository<User> {
             return rs.rows[0];
         } catch (e) {
             console.log(e);
-            throw new Error('Error during getUserByCreds method in UserRepo');
+            throw new InternalServerError('Error during getUserByCreds method in UserRepo');
+        }
+    }
+
+    async getUserByUniqueKey(key: string, value: string): Promise<User> {
+        try {
+            let client: PoolClient;
+            client = await connectionPool.connect();
+            let sql = `select * from users where $1 = $2`;
+            let rs = await client.query(sql, [key, value]);
+
+            return rs.rows[0];
+        } catch (e) {
+            console.log(e);
+            throw new InternalServerError('Error during getUserByUniqueKey in UserRepo');
         }
     }
 }
