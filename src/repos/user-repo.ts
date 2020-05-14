@@ -20,6 +20,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows;
         } catch (e) {
+            console.log(e);
             throw new InternalServerError('Error during getAll() in UserRepo.');
         }
     }
@@ -38,6 +39,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows[0];
         } catch (e) {
+            console.log(e);
             throw new InternalServerError('Error during getById method in UserRepo.');
         }
     }
@@ -51,11 +53,12 @@ export class UserRepo implements CrudRepository<User> {
         try {
             let client: PoolClient;
             client = await connectionPool.connect();
-            let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6, $7)';
+            let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6)';
             let rs = await client.query(sql, [newUser.un, newUser.pass, newUser.fn, newUser.ln, newUser.email, newUser.role]);
 
             return rs.rows[0];
         } catch (e) {
+            console.log(e);
             throw new InternalServerError('Error during save method in UserRepo.');
         }
     }
@@ -74,6 +77,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return true;
         } catch (e) {
+            console.log(e);
             throw new InternalServerError('Error during deleteById method in UserRepo');
         }
     }
@@ -87,8 +91,8 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows[0];
         } catch (e) {
+            console.log(e);
             throw new Error('Error during getUserByCreds method in UserRepo');
         }
     }
-    
 }

@@ -8,10 +8,9 @@ export class User {
     email: string;
     role: string;
 
-    constructor (id: number, username: string, password: string, fn: string, ln: string, email: string, role: string){
-        this.id = id;
-        this.un = username;
-        this.pass = password;
+    constructor (un: string, pass: string, fn: string, ln: string, email: string, role: string){
+        this.un = un;
+        this.pass = pass;
         this.fn = fn;
         this.ln = ln;
         this.email = email;

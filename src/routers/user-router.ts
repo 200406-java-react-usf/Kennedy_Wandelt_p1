@@ -1,5 +1,6 @@
 import express from 'express';
 import AppConfig from '../config/app';
+import { User } from '../models/user';
 
 export const UserRouter = express.Router();
 
@@ -30,9 +31,9 @@ UserRouter.get('/:id', async (req, resp) => {
 
 UserRouter.post('', async (req, resp) => {
     console.log('POST REQUEST RECIEVED AT /users');
-    console.log(req.body);
+    console.log(req.body as User);
     try {
-        let payload = await UserService.addNewUser(req.body);
+        let payload = await UserService.addNewUser(req.body as User);
         resp.status(201).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
@@ -43,7 +44,7 @@ UserRouter.delete('', async (req, resp) => {
     console.log('DELETE REQUEST RECIEVED AT /users');
     console.log(req.body);
     try {
-        let payload = await UserService.deleteUserById(req.body);
+        let payload = await UserService.deleteUserById(req.body.id);
         resp.status(204).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
