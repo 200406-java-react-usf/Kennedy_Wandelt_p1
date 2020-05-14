@@ -52,9 +52,27 @@ class InternalServerError extends ApplicationError {
     }
 }
 
+class AuthenticationError extends ApplicationError {
+
+    constructor(reason?: string){
+        super(401, reason);
+        super.setMessage('No session found, authentication failed.');
+    }
+}
+
+class AuthorizationError extends ApplicationError {
+
+    constructor(reason?: string){
+        super(403, reason);
+        super.setMessage('Incorrect permission for resource access.')
+    }
+}
+
 export {
     ResourceNotFoundError,
     BadRequestError,
     DataPersistanceError,
-    InternalServerError
+    InternalServerError,
+    AuthenticationError,
+    AuthorizationError
 }
