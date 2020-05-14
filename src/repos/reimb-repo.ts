@@ -81,5 +81,36 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             console.log(e);
             throw new InternalServerError('Error during deleteById method in ReimbRepo');
         }
-    }    
+    }  
+
+    async getReimbByUserId(uId: number): Promise<Reimbursement[]>{
+        try {
+            let client: PoolClient;
+            client = await connectionPool.connect();
+            let sql = '';
+            let rs = await client.query(sql, [uId]);
+
+            return rs.rows;
+
+        } catch (e) {
+            console.log(e);
+            throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
+        }
+    }
+
+    async updateById(reimb: Reimbursement): Promise<Reimbursement> {
+        try {
+            let client: PoolClient;
+            client = await connectionPool.connect();
+            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3';
+            let rs = await client.query(sql, [reimb.amount, reimb.description, reimb.type]);
+
+            return rs.rows[0];
+        } catch (e) {
+            console.log(e);
+            throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
+        }
+    }
+
+
 }
