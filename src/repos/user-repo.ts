@@ -110,4 +110,18 @@ export class UserRepo implements CrudRepository<User> {
             throw new InternalServerError('Error during getUserByUniqueKey in UserRepo');
         }
     }
+
+    async updateById(user: User): Promise<User> {
+        try {
+            let client: PoolClient;
+            client = await connectionPool.connect();
+            let sql = 'update ers_users set password = $1, first_name = $2, last_name = $3, user_role_id = $4';
+            let rs = await client.query(sql, [user.pass, user.fn, user.ln, +user.id]);
+
+            return rs.rows[0];
+        } catch (e) {
+            console.log(e);
+            throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
+        }
+    }
 }

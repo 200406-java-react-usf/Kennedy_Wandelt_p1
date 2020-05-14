@@ -7,10 +7,10 @@ export class Reimbursement {
     description: string;
     author: number;
     resolver: number;
-    status: number;
-    type: number;
+    status: string;
+    type: string;
 
-    constructor (amount: number, submitted: Date, description: string, author: number, resolver: number, status: number, type: number){
+    constructor (amount: number, submitted: Date, description: string, author: number, resolver: number, status: string, type: string){
         this.amount = amount;
         this.submitted = submitted;
         this.description = description;
