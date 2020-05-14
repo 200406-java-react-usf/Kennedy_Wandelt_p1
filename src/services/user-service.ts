@@ -2,11 +2,11 @@ import {User} from '../models/user';
 import {UserRepo} from '../repos/user-repo';
 import {isEmptyObject,
         isValidObject,
-        isValidString} from '../util/validation';
+        isValidString,
+        isValidNumber} from '../util/validation';
 import {ResourceNotFoundError,
         BadRequestError,
-        DataPersistanceError,
-        InternalServerError} from '../error/error';
+        DataPersistanceError} from '../error/error';
 
 export class UserService {
     constructor(private userRepo: UserRepo) {
@@ -42,13 +42,17 @@ export class UserService {
         conflict = await this.userRepo.getUserByUniqueKey('email', newUser.email);
 
         if(!isEmptyObject(conflict)){
-            throw new DataPersistanceError('A user with this email already exists.')
+            throw new DataPersistanceError('A user with this email already exists.');
         }
 
         conflict = await this.userRepo.getUserByUniqueKey('username', newUser.un);
 
         if(!isEmptyObject(conflict)){
-            throw new DataPersistanceError('A user with this username already exists.')
+            throw new DataPersistanceError('A user with this username already exists.');
+        }
+
+        if(!isValidNumber(newUser.id)){
+            throw new DataPersistanceError('Role Id given is not a valid number.');
         }
 
         let user = await this.userRepo.save(newUser);
@@ -57,6 +61,9 @@ export class UserService {
     }
 
     async deleteUserById(id: number): Promise<boolean> {
+        if(!isValidNumber(id)){
+            throw new BadRequestError('Given input is not a valid number.');
+        }
         let isDeleted = await this.userRepo.deleteById(id);
 
         return isDeleted;
