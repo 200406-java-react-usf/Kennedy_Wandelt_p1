@@ -23,7 +23,4 @@ AuthRouter.post('', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode || 500).json(e);
     }
-
-    resp.send();
-
 });
