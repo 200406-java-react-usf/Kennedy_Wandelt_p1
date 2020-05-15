@@ -55,7 +55,7 @@ export class UserRepo implements CrudRepository<User> {
             let client: PoolClient;
             client = await connectionPool.connect();
             let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6)';
-            let rs = await client.query(sql, [newUser.un, newUser.pass, newUser.fn, newUser.ln, newUser.email, newUser.role]);
+            let rs = await client.query(sql, [newUser.username, newUser.password, newUser.first_name, newUser.last_name, newUser.email, newUser.role_name]);
 
             return rs.rows[0];
         } catch (e) {
@@ -89,7 +89,7 @@ export class UserRepo implements CrudRepository<User> {
             client = await connectionPool.connect();
             let sql = `select * from users where username = $1 and password = $2`;
             let rs = await client.query(sql, [un, pass]);
-
+            console.log(rs.rows[0] as User);
             return rs.rows[0];
         } catch (e) {
             console.log(e);
@@ -116,7 +116,7 @@ export class UserRepo implements CrudRepository<User> {
             let client: PoolClient;
             client = await connectionPool.connect();
             let sql = 'update ers_users set password = $1, first_name = $2, last_name = $3, user_role_id = $4';
-            let rs = await client.query(sql, [user.pass, user.fn, user.ln, +user.id]);
+            let rs = await client.query(sql, [user.password, user.first_name, user.last_name, +user.ers_user_id]);
 
             return rs.rows[0];
         } catch (e) {

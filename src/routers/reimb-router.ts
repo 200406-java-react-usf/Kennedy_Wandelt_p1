@@ -1,12 +1,13 @@
 import express from 'express';
 import AppConfig from '../config/app';
+import { fmGuard } from '../middleware/auth-middleware';
 
 export const ReimbRouter = express.Router();
 
 const ReimbService = AppConfig.reimbService;
 
 
-ReimbRouter.get('', async (req, resp) => {
+ReimbRouter.get('', fmGuard,  async (req, resp) => {
     console.log('GET REQUEST RECIEVED AT /reimbursements');
     try {
         let payload = await ReimbService.getAllReimbs();
@@ -16,7 +17,7 @@ ReimbRouter.get('', async (req, resp) => {
     }
 })
 
-ReimbRouter.get('/:id', async (req, resp) => {
+ReimbRouter.get('/:id', fmGuard, async (req, resp) => {
     let id = +req.params.id;
     console.log('GET REQUEST RECIEVED AT /reimbursements/' + id);
     try {
