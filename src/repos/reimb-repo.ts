@@ -111,6 +111,4 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         }
     }
-
-
 }
