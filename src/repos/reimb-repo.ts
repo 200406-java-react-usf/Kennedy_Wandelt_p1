@@ -55,7 +55,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             let client: PoolClient;
             client = await connectionPool.connect();
             let sql = 'insert into ers_reimbursements(amount, submitted, description, author, resolver, status, type) values ($1, $2, $3, $4, $5, $6, $7)';
-            let rs = await client.query(sql, [newReimb.amount, newReimb.submitted, newReimb.description, newReimb.author, newReimb.resolver, newReimb.status, newReimb.type]);
+            let rs = await client.query(sql, [newReimb.amount, newReimb.submitted, newReimb.description, newReimb.author_id, newReimb.resolver_id, newReimb.reimb_status_id, newReimb.reimb_type_id]);
 
             return rs.rows[0];
         } catch (e) {
@@ -103,7 +103,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             let client: PoolClient;
             client = await connectionPool.connect();
             let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3';
-            let rs = await client.query(sql, [reimb.amount, reimb.description, +reimb.type]);
+            let rs = await client.query(sql, [reimb.amount, reimb.description, +reimb.reimb_type_id]);
 
             return rs.rows[0];
         } catch (e) {
