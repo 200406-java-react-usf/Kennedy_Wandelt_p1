@@ -23,6 +23,8 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getAll() in UserRepo.');
+        } finally {
+            client && client.release();
         }
     }
 
@@ -32,8 +34,9 @@ export class UserRepo implements CrudRepository<User> {
      * @param id - number value referencing a User Id
      */
     async getById(id: number): Promise<User>{
+        let client: PoolClient;
         try{
-            let client: PoolClient;
+
             client = await connectionPool.connect();
             let sql = `select * from users where ers_user_id = $1`
             let rs = await client.query(sql, [id]);
@@ -42,6 +45,8 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getById method in UserRepo.');
+        } finally {
+            client && client.release();
         }
     }
 
@@ -51,8 +56,9 @@ export class UserRepo implements CrudRepository<User> {
      * @param newUser - User object to be added to the DB
      */
     async save(newUser: User): Promise<User>{
+        let client: PoolClient;
         try {
-            let client: PoolClient;
+
             client = await connectionPool.connect();
             let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6)';
             let rs = await client.query(sql, [newUser.username, newUser.password, newUser.first_name, newUser.last_name, newUser.email, newUser.role_name]);
@@ -61,6 +67,8 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during save method in UserRepo.');
+        } finally {
+            client && client.release();
         }
     }
 
@@ -70,8 +78,9 @@ export class UserRepo implements CrudRepository<User> {
      * @param id - id of user to be deleted
      */
     async deleteById(id: number): Promise<boolean>{
+        let client: PoolClient;
         try {
-            let client: PoolClient;
+
             client = await connectionPool.connect();
             let sql = 'delete from ers_users where ers_user_id = $1';
             let rs = await client.query(sql, [id]);
@@ -80,12 +89,15 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during deleteById method in UserRepo');
+        } finally {
+            client && client.release();
         }
     }
 
     async getUserByCreds(un: string, pass: string): Promise<User> {
+        let client: PoolClient;
         try {
-            let client: PoolClient;
+
             client = await connectionPool.connect();
             let sql = `select * from users where username = $1 and password = $2`;
             let rs = await client.query(sql, [un, pass]);
@@ -94,12 +106,15 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getUserByCreds method in UserRepo');
+        } finally {
+            client && client.release();
         }
     }
 
     async getUserByUniqueKey(key: string, value: string): Promise<User> {
+        let client: PoolClient;
         try {
-            let client: PoolClient;
+
             client = await connectionPool.connect();
             let sql = `select * from users where $1 = $2`;
             let rs = await client.query(sql, [key, value]);
@@ -108,12 +123,14 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getUserByUniqueKey in UserRepo');
+        } finally {
+            client && client.release();
         }
     }
 
     async updateById(user: User): Promise<User> {
-        try {
-            let client: PoolClient;
+        let client: PoolClient;
+        try { 
             client = await connectionPool.connect();
             let sql = 'update ers_users set password = $1, first_name = $2, last_name = $3, user_role_id = $4';
             let rs = await client.query(sql, [user.password, user.first_name, user.last_name, +user.ers_user_id]);
@@ -122,6 +139,8 @@ export class UserRepo implements CrudRepository<User> {
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
+        } finally {
+            client && client.release();
         }
     }
 }
