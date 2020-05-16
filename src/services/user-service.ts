@@ -42,7 +42,6 @@ export class UserService {
 
         conflict = await this.userRepo.getUserByUniqueKey('email', newUser.email);
 
-        console.log(conflict);
 
         if(conflict != 0){
             throw new DataPersistanceError('A user with this email already exists.');
@@ -50,12 +49,10 @@ export class UserService {
 
         conflict = await this.userRepo.getUserByUniqueKey('username', newUser.username);
 
-        console.log(conflict)
         if(conflict != 0){
             throw new DataPersistanceError('A user with this username already exists.');
         }
-
-        console.log(typeof(newUser.role_id))
+        
         if(!isValidNumber(newUser.role_id)){
             throw new DataPersistanceError('Role Id given is not a valid number.');
         }

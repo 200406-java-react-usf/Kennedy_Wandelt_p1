@@ -63,7 +63,6 @@ export class UserRepo implements CrudRepository<User> {
             client = await connectionPool.connect();
             let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6)';
             let rs = await client.query(sql, [newUser.username, newUser.password, newUser.first_name, newUser.last_name, newUser.email, newUser.role_id]);
-
             let sql2 = 'select * from users where username = $1';
             let rs2 = await client.query(sql2, [newUser.username]);
 
