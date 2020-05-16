@@ -2,6 +2,7 @@ import express from 'express';
 import AppConfig from '../config/app';
 import { User } from '../models/user';
 import { adminGuard } from '../middleware/auth-middleware';
+import {NewUser} from '../models/newUser';
 
 export const UserRouter = express.Router();
 
@@ -34,7 +35,7 @@ UserRouter.post('', adminGuard, async (req, resp) => {
     console.log('POST REQUEST RECIEVED AT /users');
     console.log(req.body as User);
     try {
-        let payload = await UserService.addNewUser(req.body as User);
+        let payload = await UserService.addNewUser(req.body as NewUser);
         resp.status(201).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);

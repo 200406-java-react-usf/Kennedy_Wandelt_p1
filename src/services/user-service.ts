@@ -1,4 +1,5 @@
 import {User} from '../models/user';
+import {NewUser} from '../models/newUser';
 import {UserRepo} from '../repos/user-repo';
 import {isEmptyObject,
         isValidObject,
@@ -31,7 +32,7 @@ export class UserService {
         return user;
     }
 
-    async addNewUser(newUser: User): Promise<User> {
+    async addNewUser(newUser: NewUser): Promise<User> {
 
         if(!isValidObject(newUser, 'id')) {
             throw new BadRequestError('User object given was invalid.');
@@ -41,17 +42,21 @@ export class UserService {
 
         conflict = await this.userRepo.getUserByUniqueKey('email', newUser.email);
 
-        if(!isEmptyObject(conflict)){
+        console.log(conflict);
+
+        if(conflict != 0){
             throw new DataPersistanceError('A user with this email already exists.');
         }
 
         conflict = await this.userRepo.getUserByUniqueKey('username', newUser.username);
 
-        if(!isEmptyObject(conflict)){
+        console.log(conflict)
+        if(conflict != 0){
             throw new DataPersistanceError('A user with this username already exists.');
         }
 
-        if(!isValidNumber(newUser.ers_user_id)){
+        console.log(typeof(newUser.role_id))
+        if(!isValidNumber(newUser.role_id)){
             throw new DataPersistanceError('Role Id given is not a valid number.');
         }
 

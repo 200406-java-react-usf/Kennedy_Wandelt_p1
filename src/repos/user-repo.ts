@@ -3,6 +3,7 @@ import { CrudRepository } from './crud-repo';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
 import { InternalServerError} from '../error/error';
+import { NewUser} from '../models/newUser';
 
 
 
@@ -55,15 +56,18 @@ export class UserRepo implements CrudRepository<User> {
      * Add new User to ers_users table of data base
      * @param newUser - User object to be added to the DB
      */
-    async save(newUser: User): Promise<User>{
+    async save(newUser: NewUser): Promise<User>{
         let client: PoolClient;
         try {
 
             client = await connectionPool.connect();
             let sql = 'insert into ers_users(username, password, first_name, last_name, email, user_role_id) values ($1, $2, $3, $4, $5, $6)';
-            let rs = await client.query(sql, [newUser.username, newUser.password, newUser.first_name, newUser.last_name, newUser.email, newUser.role_name]);
+            let rs = await client.query(sql, [newUser.username, newUser.password, newUser.first_name, newUser.last_name, newUser.email, newUser.role_id]);
 
-            return rs.rows[0];
+            let sql2 = 'select * from users where username = $1';
+            let rs2 = await client.query(sql2, [newUser.username]);
+
+            return rs2.rows[0];
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during save method in UserRepo.');
@@ -111,7 +115,7 @@ export class UserRepo implements CrudRepository<User> {
         }
     }
 
-    async getUserByUniqueKey(key: string, value: string): Promise<User> {
+    async getUserByUniqueKey(key: string, value: string): Promise<number> {
         let client: PoolClient;
         try {
 
@@ -119,7 +123,7 @@ export class UserRepo implements CrudRepository<User> {
             let sql = `select * from users where $1 = $2`;
             let rs = await client.query(sql, [key, value]);
 
-            return rs.rows[0];
+            return rs.rows.length;
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getUserByUniqueKey in UserRepo');
