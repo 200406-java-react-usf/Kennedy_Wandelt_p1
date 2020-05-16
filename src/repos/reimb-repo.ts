@@ -3,6 +3,7 @@ import { CrudRepository } from './crud-repo';
 import { PoolClient } from 'pg';
 import { connectionPool } from '..';
 import { InternalServerError} from '../error/error';
+import { NewReimbursement } from '../models/newReimb';
 
 
 
@@ -55,7 +56,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
      * Add new Reimbursement to ers_reimbursements table of data base
      * @param newReimb - Reimbursement object to be added to the DB
      */
-    async save(newReimb: Reimbursement): Promise<Reimbursement>{
+    async save(newReimb: NewReimbursement): Promise<Reimbursement>{
         let client: PoolClient;
         try {
 
@@ -118,7 +119,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         try {
             client = await connectionPool.connect();
             let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3';
-            let rs = await client.query(sql, [reimb.amount, reimb.description, +reimb.reimb_type_id]);
+            let rs = await client.query(sql, [reimb.amount, reimb.description, +reimb.reimb_type]);
 
             return rs.rows[0];
         } catch (e) {

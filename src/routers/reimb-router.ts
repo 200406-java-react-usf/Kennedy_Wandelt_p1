@@ -28,6 +28,17 @@ ReimbRouter.get('/:id', async (req, resp) => {
     }
 })
 
+ReimbRouter.get('/user/:id', async (req, resp) => {
+    let userId = +req.params.id;
+    console.log('GET REQUEST RECIEVED AT /reimbursements/' + userId);
+    try {
+        let payload = await ReimbService.getReimbByUserId(userId);
+        resp.status(200).json(payload);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);        
+    }
+})
+
 
 ReimbRouter.post('', async (req, resp) => {
     console.log('POST REQUEST RECIEVED AT /reimbursements');
