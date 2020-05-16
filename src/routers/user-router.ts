@@ -9,7 +9,7 @@ export const UserRouter = express.Router();
 const UserService = AppConfig.userService;
 
 
-UserRouter.get('', async (req, resp) => {
+UserRouter.get('', adminGuard, async (req, resp) => {
     console.log('GET REQUEST RECIEVED AT /users');
     try {
         let payload = await UserService.getAllUsers();
