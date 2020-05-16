@@ -9,7 +9,7 @@ export const UserRouter = express.Router();
 const UserService = AppConfig.userService;
 
 
-UserRouter.get('', adminGuard, async (req, resp) => {
+UserRouter.get('', async (req, resp) => {
     console.log('GET REQUEST RECIEVED AT /users');
     try {
         let payload = await UserService.getAllUsers();
@@ -31,7 +31,7 @@ UserRouter.get('/:id', async (req, resp) => {
 })
 
 
-UserRouter.post('', adminGuard, async (req, resp) => {
+UserRouter.post('', async (req, resp) => {
     console.log('POST REQUEST RECIEVED AT /users');
     console.log(req.body as User);
     try {
@@ -42,7 +42,7 @@ UserRouter.post('', adminGuard, async (req, resp) => {
     }
 })
 
-UserRouter.delete('', adminGuard, async (req, resp) => {
+UserRouter.delete('', async (req, resp) => {
     console.log('DELETE REQUEST RECIEVED AT /users');
     console.log(req.body);
     try {

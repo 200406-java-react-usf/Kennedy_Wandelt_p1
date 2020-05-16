@@ -7,7 +7,7 @@ export const ReimbRouter = express.Router();
 const ReimbService = AppConfig.reimbService;
 
 
-ReimbRouter.get('', fmGuard,  async (req, resp) => {
+ReimbRouter.get('', async (req, resp) => {
     console.log('GET REQUEST RECIEVED AT /reimbursements');
     try {
         let payload = await ReimbService.getAllReimbs();
@@ -17,7 +17,7 @@ ReimbRouter.get('', fmGuard,  async (req, resp) => {
     }
 })
 
-ReimbRouter.get('/:id', fmGuard, async (req, resp) => {
+ReimbRouter.get('/:id', async (req, resp) => {
     let id = +req.params.id;
     console.log('GET REQUEST RECIEVED AT /reimbursements/' + id);
     try {
