@@ -15,7 +15,7 @@ ReimbRouter.get('', fmGuard, async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-})
+});
 
 ReimbRouter.get('/:id', async (req, resp) => {
     let id = +req.params.id;
@@ -26,7 +26,7 @@ ReimbRouter.get('/:id', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);        
     }
-})
+});
 
 ReimbRouter.get('/user/:id', async (req, resp) => {
     let userId = +req.params.id;
@@ -37,7 +37,7 @@ ReimbRouter.get('/user/:id', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);        
     }
-})
+});
 
 
 ReimbRouter.post('', async (req, resp) => {
@@ -49,7 +49,7 @@ ReimbRouter.post('', async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-})
+});
 
 ReimbRouter.delete('', fmGuard, async (req, resp) => {
     console.log('DELETE REQUEST RECIEVED AT /reimbursements');
@@ -60,4 +60,15 @@ ReimbRouter.delete('', fmGuard, async (req, resp) => {
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
-})
+});
+
+ReimbRouter.delete('', async (req, resp) => {
+    console.log('PUT REQUEST RECIEVED AT /reimbursements');
+    console.log(req.body);
+    try{
+        let payload = await ReimbService.updateReimb(req.body);
+        resp.status(200).json(payload);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+});

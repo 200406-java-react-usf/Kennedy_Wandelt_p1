@@ -59,9 +59,28 @@ export class ReimbService {
         let myReimbs = await this.reimbRepo.getReimbByUserId(userId);
 
         if(myReimbs.length === 0){
-            throw new ResourceNotFoundError('No reimbursements found with provided author Id.')
+            throw new ResourceNotFoundError('No reimbursements found with provided author Id.');
         }
 
         return myReimbs;
+    }
+
+    async updateReimb(newReimb: Reimbursement): Promise<boolean> {
+
+        if(!isValidObject(newReimb)){
+            throw new BadRequestError('Provided input is not a valid object, or contains invalid characteristics');
+        }
+
+        if(!isValidNumber(+newReimb.reimb_status) || !isValidNumber(+newReimb.reimb_type)){
+            throw new DataPersistanceError('Reimbursemetn Status or Type are not valid numbers');
+        }
+
+        if(+newReimb.reimb_status > 3 || +newReimb.reimb_type > 4){
+            throw new DataPersistanceError('Reimbursement Status or Type is not a valid id');
+        }
+
+        let reimb = await this.reimbRepo.updateById(newReimb);
+
+        return true;
     }
 }

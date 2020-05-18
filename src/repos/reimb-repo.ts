@@ -118,8 +118,8 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         
         try {
             client = await connectionPool.connect();
-            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3';
-            let rs = await client.query(sql, [reimb.amount, reimb.description, +reimb.reimb_type]);
+            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3, reimb_status = $4, resolver_id = $5, resolved = $6';
+            let rs = await client.query(sql, [+reimb.amount, reimb.description, +reimb.reimb_type, +reimb.reimb_status, +reimb.resolver_id, reimb.resolved]);
 
             return rs.rows[0];
         } catch (e) {
