@@ -34,7 +34,7 @@ export class UserService {
 
     async addNewUser(newUser: NewUser): Promise<User> {
 
-        if(!isValidObject(newUser, 'id')) {
+        if(!isValidObject(newUser)) {
             throw new BadRequestError('User object given was invalid.');
         }
         
@@ -51,10 +51,6 @@ export class UserService {
 
         if(conflict != 0){
             throw new DataPersistanceError('A user with this username already exists.');
-        }
-        
-        if(!isValidNumber(newUser.role_id)){
-            throw new DataPersistanceError('Role Id given is not a valid number.');
         }
 
         let user = await this.userRepo.save(newUser);

@@ -7,7 +7,7 @@ export const ReimbRouter = express.Router();
 const ReimbService = AppConfig.reimbService;
 
 
-ReimbRouter.get('', async (req, resp) => {
+ReimbRouter.get('', fmGuard, async (req, resp) => {
     console.log('GET REQUEST RECIEVED AT /reimbursements');
     try {
         let payload = await ReimbService.getAllReimbs();
@@ -51,7 +51,7 @@ ReimbRouter.post('', async (req, resp) => {
     }
 })
 
-ReimbRouter.delete('', async (req, resp) => {
+ReimbRouter.delete('', fmGuard, async (req, resp) => {
     console.log('DELETE REQUEST RECIEVED AT /reimbursements');
     console.log(req.body);
     try {
