@@ -62,9 +62,10 @@ ReimbRouter.delete('', fmGuard, async (req, resp) => {
     }
 });
 
-ReimbRouter.delete('', async (req, resp) => {
+ReimbRouter.put('', async (req, resp) => {
     console.log('PUT REQUEST RECIEVED AT /reimbursements');
     console.log(req.body);
+
     try{
         let payload = await ReimbService.updateReimb(req.body);
         resp.status(200).json(payload);

@@ -115,15 +115,15 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
     async updateById(reimb: Reimbursement): Promise<Reimbursement> {
         let client: PoolClient;
+
         
         try {
             client = await connectionPool.connect();
-            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3, reimb_status = $4, resolver_id = $5, resolved = $6';
-            let rs = await client.query(sql, [+reimb.amount, reimb.description, +reimb.reimb_type, +reimb.reimb_status, +reimb.resolver_id, reimb.resolved]);
+            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3, reimb_status_id = $4, resolver_id = $5, resolved = $6';
+            let rs = await client.query(sql, [+reimb.amount, reimb.description, +reimb.reimb_type, +reimb.reimb_status, +reimb.resolver_id, reimb.resolved]); 
 
             return rs.rows[0];
         } catch (e) {
-            console.log(e);
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         } finally {
             client && client.release();
