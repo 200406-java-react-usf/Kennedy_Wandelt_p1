@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import AppConfig from '../config/app';
 import { User } from '../models/user';
 import { adminGuard } from '../middleware/auth-middleware';
@@ -48,6 +48,17 @@ UserRouter.delete('', adminGuard, async (req, resp) => {
     try {
         let payload = await UserService.deleteUserById(req.body.id);
         resp.status(204).json(payload);
+    } catch (e) {
+        resp.status(e.statusCode).json(e);
+    }
+})
+
+UserRouter.put('', adminGuard, async (req, resp) => {
+    console.log('PUT REQUEST RECIEVED AT /users');
+    console.log(req.body);
+    try {
+        let payload = await UserService.updateUser(req.body);
+        response.status(204).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
