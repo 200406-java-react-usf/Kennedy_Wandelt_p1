@@ -80,7 +80,6 @@ export class UserService {
     }
 
     async updateUser(user: User): Promise<boolean>{
-
         //add validation
         let didUpdate = await this.userRepo.updateById(user);
 

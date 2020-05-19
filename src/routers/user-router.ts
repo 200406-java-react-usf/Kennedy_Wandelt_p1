@@ -58,7 +58,7 @@ UserRouter.put('', adminGuard, async (req, resp) => {
     console.log(req.body);
     try {
         let payload = await UserService.updateUser(req.body);
-        response.status(204).json(payload);
+        resp.status(204).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }
