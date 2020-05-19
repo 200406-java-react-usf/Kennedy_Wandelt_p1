@@ -86,7 +86,7 @@ export class UserRepo implements CrudRepository<User> {
 
             client = await connectionPool.connect();
             let sql = 'delete from ers_users where ers_user_id = $1';
-            let rs = await client.query(sql, [id]);
+            let rs = await client.query(sql, [+id]);
 
             return true;
         } catch (e) {
