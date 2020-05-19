@@ -61,8 +61,8 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         try {
 
             client = await connectionPool.connect();
-            let sql = 'insert into ers_reimbursements(amount, submitted, description, author, resolver, status, type) values ($1, $2, $3, $4, $5, $6, $7)';
-            let rs = await client.query(sql, [newReimb.amount, newReimb.submitted, newReimb.description, newReimb.author_id, newReimb.resolver_id, newReimb.reimb_status_id, newReimb.reimb_type_id]);
+            let sql = 'insert into ers_reimbursements(amount, submitted, description, author_id, reimb_status_id, reimb_type_id, resolved, resolver_id) values ($1, to_timestamp($2 / 1000.0), $3, $4, $5, $6, null, null)';
+            let rs = await client.query(sql, [newReimb.amount, newReimb.submitted, newReimb.description, newReimb.author_id, newReimb.reimb_status_id, newReimb.reimb_type_id]);
 
             return rs.rows[0];
         } catch (e) {
@@ -115,15 +115,15 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
     async updateById(reimb: Reimbursement): Promise<Reimbursement> {
         let client: PoolClient;
-
         
         try {
             client = await connectionPool.connect();
-            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3, reimb_status_id = $4, resolver_id = $5, resolved = $6';
-            let rs = await client.query(sql, [+reimb.amount, reimb.description, +reimb.reimb_type, +reimb.reimb_status, +reimb.resolver_id, reimb.resolved]); 
+            let sql = 'update ers_reimbursements set amount = $1, description = $2, reimb_type_id = $3, reimb_status_id = $4, resolver_id = $5, resolved = to_timestamp($6 / 1000.0) where reimb_id = $7';
+            let rs = await client.query(sql, [+reimb.amount, reimb.description, +reimb.reimb_type, +reimb.reimb_status, reimb.resolver_id, reimb.resolved, reimb.reimb_id]); 
 
             return rs.rows[0];
         } catch (e) {
+            console.log(e);
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         } finally {
             client && client.release();

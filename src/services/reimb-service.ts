@@ -67,9 +67,10 @@ export class ReimbService {
 
     async updateReimb(newReimb: Reimbursement): Promise<boolean> {
 
-        if(!isValidObject(newReimb)){
+        if(!isValidObject(newReimb, 'resolved', 'resolver_id')){
             throw new BadRequestError('Provided input is not a valid object, or contains invalid characteristics');
         }
+
 
         if(!isValidNumber(+newReimb.reimb_status) || !isValidNumber(+newReimb.reimb_type)){
             throw new DataPersistanceError('Reimbursemetn Status or Type are not valid numbers');
@@ -78,7 +79,6 @@ export class ReimbService {
         if(+newReimb.reimb_status > 3 || +newReimb.reimb_type > 4){
             throw new DataPersistanceError('Reimbursement Status or Type is not a valid id');
         }
-
         let reimb = await this.reimbRepo.updateById(newReimb);
 
         return true;
