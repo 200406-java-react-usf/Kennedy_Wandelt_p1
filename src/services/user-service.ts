@@ -24,6 +24,10 @@ export class UserService {
     }
 
     async getUserById(id: number): Promise<User> {
+        
+        if(+id == NaN) {
+            throw new BadRequestError('getUserById was not given a valid number.')
+        }
         let user = await this.userRepo.getById(id);
 
         if(isEmptyObject(user)) {
@@ -80,8 +84,12 @@ export class UserService {
     }
 
     async updateUser(user: User): Promise<boolean>{
-        //add validation
-        let didUpdate = await this.userRepo.updateById(user);
+        
+        if(!isValidObject(user)) {
+            throw new BadRequestError('User object given was invalid.');
+        }
+
+        await this.userRepo.updateById(user);
 
         return true;
     }
