@@ -72,28 +72,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             client && client.release();
         }
     }
-
-
-    /**
-     * Delete Reimbursement from ers_reimbursements table of data base
-     * @param id - id of reimbursement to be deleted
-     */
-    async deleteById(id: number): Promise<boolean>{
-        let client: PoolClient;
-        try {
-
-            client = await connectionPool.connect();
-            let sql = 'delete from ers_reimbursement where reimb_id = $1';
-            let rs = await client.query(sql, [id]);
-
-            return true;
-        } catch (e) {
-            console.log(e);
-            throw new InternalServerError('Error during deleteById method in ReimbRepo');
-        } finally {
-            client && client.release();
-        }
-    }  
+  
 
     async getReimbByUserId(uId: number): Promise<Reimbursement[]>{
         let client: PoolClient;

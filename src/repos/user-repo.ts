@@ -42,7 +42,7 @@ export class UserRepo implements CrudRepository<User> {
             let sql = `select * from users where ers_user_id = $1`
             let rs = await client.query(sql, [id]);
 
-            return rs.rows[0];
+            return rs.rows[0] as User;
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getById method in UserRepo.');
@@ -66,7 +66,7 @@ export class UserRepo implements CrudRepository<User> {
             let sql2 = 'select * from users where username = $1';
             let rs2 = await client.query(sql2, [newUser.username]);
 
-            return rs2.rows[0];
+            return rs2.rows[0] as User;
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during save method in UserRepo.');
@@ -104,8 +104,8 @@ export class UserRepo implements CrudRepository<User> {
             client = await connectionPool.connect();
             let sql = `select * from users where username = $1 and password = $2`;
             let rs = await client.query(sql, [un, pass]);
-            console.log(rs.rows[0] as User);
-            return rs.rows[0];
+
+            return rs.rows[0] as User;
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getUserByCreds method in UserRepo');
@@ -139,7 +139,7 @@ export class UserRepo implements CrudRepository<User> {
             let sql = 'update ers_users set password = $1, first_name = $2, last_name = $3, user_role_id = $4, username = $5, email = $6 where ers_user_id = $7';
             let rs = await client.query(sql, [user.password, user.first_name, user.last_name, +user.role_name, user.username, user.email, +user.ers_user_id ]);
 
-            return rs.rows[0];
+            return rs.rows[0] as User;
         } catch (e) {
             console.log(e);
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');

@@ -22,8 +22,11 @@
   },
   "homepage": "https://github.com/200406-java-react-usf/Kennedy_Wandelt_p1#readme",
   "devDependencies": {
+    "@types/jest": "^25.2.3",
     "@types/node": "^13.13.5",
+    "jest": "^26.0.1",
     "morgan": "^1.10.0",
+    "ts-jest": "^26.0.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
