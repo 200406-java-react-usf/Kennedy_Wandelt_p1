@@ -27,8 +27,11 @@ export const isValidString = (...strs: string[]): boolean => {
 };
 
 export const isValidNumber = (num: number): boolean => {
-    if(typeof(num) === "number") return true;
-    return false;
+    if(+num == NaN){
+        return false;
+    } else if (typeof(num) === 'number') {
+        return true;
+    }
 }
 
 export default {

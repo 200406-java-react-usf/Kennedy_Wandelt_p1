@@ -22,7 +22,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
             return rs.rows;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getAll() in ReimbRepo.');
         } finally {
             client && client.release();
@@ -44,7 +44,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
             return rs.rows[0];
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getById method in ReimbRepo.');
         } finally {
             client && client.release();
@@ -66,7 +66,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
             return rs.rows[0];
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during save method in ReimbRepo.');
         } finally {
             client && client.release();
@@ -85,7 +85,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
             return rs.rows;
 
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         } finally {
             client && client.release();
@@ -102,7 +102,7 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
 
             return rs.rows[0];
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         } finally {
             client && client.release();

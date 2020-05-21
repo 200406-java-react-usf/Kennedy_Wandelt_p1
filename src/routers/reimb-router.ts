@@ -39,24 +39,12 @@ ReimbRouter.get('/user/:id', async (req, resp) => {
     }
 });
 
-
 ReimbRouter.post('', async (req, resp) => {
     console.log('POST REQUEST RECIEVED AT /reimbursements');
     console.log(req.body);
     try {
         let payload = await ReimbService.addNewReimb(req.body);
         resp.status(201).json(payload);
-    } catch (e) {
-        resp.status(e.statusCode).json(e);
-    }
-});
-
-ReimbRouter.delete('', fmGuard, async (req, resp) => {
-    console.log('DELETE REQUEST RECIEVED AT /reimbursements');
-    console.log(req.body);
-    try {
-        let payload = await ReimbService.deleteReimbById(req.body);
-        resp.status(204).json(payload);
     } catch (e) {
         resp.status(e.statusCode).json(e);
     }

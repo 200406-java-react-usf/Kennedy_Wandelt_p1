@@ -21,6 +21,10 @@ export class ReimbService {
     }
 
     async getReimbById(id: number): Promise<Reimbursement> {
+        if(!isValidNumber(+id)){
+            throw new BadRequestError('Provided id is not a number');
+        }
+
         let reimb = await this.reimbRepo.getById(id);
 
         if(isEmptyObject(reimb)){
@@ -40,15 +44,6 @@ export class ReimbService {
         return reimb;
     }
 
-    async deleteReimbById(id: number): Promise<boolean> {
-
-        if(!isValidNumber(id)){
-            throw new BadRequestError('Given input is not a valid number.');
-        }
-        let isDeleted = await this.reimbRepo.deleteById(id);
-
-        return isDeleted;
-    }
 
     async getReimbByUserId(userId: number): Promise<Reimbursement[]> {
 

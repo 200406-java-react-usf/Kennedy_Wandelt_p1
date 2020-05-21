@@ -1,7 +1,7 @@
-import { UserService } from '../services/user-service';
-import { UserRepo } from '../repos/user-repo';
-import { User } from '../models/user';
-import { NewUser } from '../models/newUser';
+import { ReimbService } from '../services/reimb-service';
+import { ReimbRepo } from '../repos/reimb-repo';
+import { Reimbursement } from '../models/reimb';
+import { NewReimbursement } from '../models/newReimb';
 import Validation from '../util/validation';
 import { DataPersistanceError, BadRequestError, ResourceNotFoundError} from '../error/error';
 
@@ -10,23 +10,21 @@ jest.mock('../repos/user-repo', () => {
         getAll = jest.fn();
         getById = jest.fn();
         save = jest.fn();
-        deleteById = jest.fn();
-        getUserByCreds = jest.fn();
-        gteUserByUniqueKey = jest.fn();
+        getReimbByUserId = jest.fn();
         updateById = jest.fn();
     }
 });
 
-describe('userService', () => {
-    let sut: UserService;
+describe('reimbService', () => {
+    let sut: ReimbService;
     let mockRepo;
 
-    let mockUsers = [
-        new User(1, 'one', 'password', 'One', 'Testerson', 'email1@email.com', 'employee'),
-        new User(2, 'two', 'password', 'Two', 'Testerson', 'email2@email.com', 'employee'),
-        new User(3, 'three', 'password', 'Three', 'Testerson', 'email3@email.com', 'employee'),
-        new User(4, 'four', 'password', 'Four', 'Testerson', 'email4@email.com', 'employee'),
-        new User(5, 'five', 'password', 'Five', 'Testerson', 'email5@email.com', 'employee')
+    let mockReimbs = [
+        new Reimbursement(1, 10.00, Date.now(), Date.now(), 'test 1', 1, 2, 'approved', 'other'),
+        new Reimbursement(2, 10.00, Date.now(), Date.now(), 'test 2', 1, 2, 'approved', 'other'),
+        new Reimbursement(3, 10.00, Date.now(), Date.now(), 'test 3', 1, 2, 'approved', 'other'),
+        new Reimbursement(4, 10.00, Date.now(), Date.now(), 'test 4', 1, 2, 'approved', 'other'),
+        new Reimbursement(5, 10.00, Date.now(), Date.now(), 'test 5', 1, 2, 'approved', 'other'),
     ];
 
     beforeEach(() => {
@@ -37,96 +35,93 @@ describe('userService', () => {
                 getAll: jest.fn(),
                 getById: jest.fn(),
                 save: jest.fn(),
-                deleteById: jest.fn(),
-                getUserByCreds: jest.fn(),
-                gteUserByUniqueKey: jest.fn(),
+                getReimbByUserId: jest.fn(),
                 updateById: jest.fn()
             }
         });
         
-        sut = new UserService(mockRepo);
+        sut = new ReimbService(mockRepo);
     });
 
-    test('should resolve to User[] when getAllUsers() succesfully retrieves users from the data source', async () => {
+    test('should resolve to Reimb[] when getAllReimbs() succesfully retrieves from the data source', async () => {
 
         //arrange
         expect.hasAssertions()
-        mockRepo.getAll = jest.fn().mockReturnValue(mockUsers)
+        mockRepo.getAll = jest.fn().mockReturnValue(mockReimbs)
         //act
 
-        let result = await sut.getAllUsers();
+        let result = await sut.getAllReimbs();
 
         //assert\
         expect(result).toBeTruthy();
         expect(result.length).toBe(5);
     });
 
-    test('should reject with ResourceNotfoundError when getallUsers fails to get any user from the data dource', async() => {
+    test('should reject with ResourceNotfoundError when getallReimbs fails to get any user from the data dource', async() => {
         expect.hasAssertions();
         mockRepo.getAll = jest.fn().mockReturnValue([]);
 
         try {
-            await sut.getAllUsers();
+            await sut.getAllReimbs();
         } catch (e) {
             expect(e instanceof ResourceNotFoundError).toBe(true);
         }
     });
 
-    test('should resolve to User when getUserById is given a valid a known id', async() => {
+    test('should resolve to User when getReimbById is given a valid a known id', async() => {
         expect.hasAssertions();
-        Validation.isValidString = jest.fn().mockReturnValue(true);
 
         mockRepo.getById = jest.fn().mockImplementation((id: number) => {
-            return new Promise<User>((resolve) => resolve(mockUsers[0]));
+            return new Promise<Reimbursement>((resolve) => resolve(mockReimbs[0]));
         });
 
         Validation.isEmptyObject = jest.fn().mockReturnValue(false);
 
-        let result = await sut.getUserById(1);
+        let result = await sut.getReimbById(1);
 
         expect(result).toBeTruthy();
-        expect(result.ers_user_id).toBe(1);
-        expect(result.username).toBe('one');
+        expect(result.reimb_id).toBe(1);
+        expect(result.description).toBe('test 1');
     });
 
-    test('should result in BadRequestError when getUserById is given an id that is not a number', async() => {
-        expect.hasAssertions();
+    // test('should result in BadRequestError when getReimbById is given an id that is not a number', async() => {
+    //     expect.hasAssertions();
+    //     Validation.isValidNumber = jest.fn().mockReturnValue(false);
         
-        try {
-            //@ts-ignore
-            await sut.getUserById('gone');
-        } catch (e) {
-            expect(e instanceof BadRequestError).toBe(true);
-        }
-    });
+    //     try {
+    //         //@ts-ignore
+    //         await sut.getUserById('');
+    //     } catch (e) {
+    //         expect(e instanceof BadRequestError).toBe(true);
+    //     }
+    // });
 
-    test('should reject with ResourceNotfoundError when getUserById fails to get a user from the data dource', async() => {
-        expect.hasAssertions();
-        mockRepo.getAll = jest.fn().mockReturnValue([]);
+    // test('should reject with ResourceNotfoundError when getReimbById fails to get a Reimb from the data dource', async() => {
+    //     expect.hasAssertions();
+    //     mockRepo.getAll = jest.fn().mockReturnValue([]);
 
-        try {
-            await sut.getUserById(6);
-        } catch (e) {
-            expect(e instanceof ResourceNotFoundError).toBe(true);
-        }
-    });
+    //     try {
+    //         await sut.getReimbById(6);
+    //     } catch (e) {
+    //         expect(e instanceof ResourceNotFoundError).toBe(true);
+    //     }
+    // });
 
 
-    test('should return new object when a valid NewUser object is added to addNewUser', async() => {
+    test('should return new object when a valid Newreimb object is added to addNewReimb', async() => {
 
         expect.hasAssertions();
         Validation.isValidObject=jest.fn().mockReturnValue(true);
 
-        mockRepo.getUserByUniqueKey = jest.fn().mockReturnValue(0);
 
-        mockRepo.save = jest.fn().mockImplementation((newUser: NewUser) => {
-            return new Promise<User>((resolve) => resolve(mockUsers[2]));
+        mockRepo.save = jest.fn().mockImplementation((newReimb: NewReimbursement) => {
+            return new Promise<Reimbursement>((resolve) => resolve(mockReimbs[2]));
         });
 
-        let result = await sut.addNewUser(new NewUser('three', 'password', 'Three', 'Testerson', 'email3@email.com', 3))
+        let result = await sut.addNewReimb(new NewReimbursement(10.00, Date.now(), 'test', 1, 1, 2))
 
         expect(result).toBeTruthy();
-        expect(result.ers_user_id).toBe(3);
+        expect(result.reimb_id).toBe(3);
         expect(result instanceof Object).toBe(true);
 
     });
@@ -137,93 +132,60 @@ describe('userService', () => {
         Validation.isValidObject=jest.fn().mockReturnValue(false);
 
         try {
-            await sut.addNewUser(new NewUser(null, 'password', 'Three', 'Testerson', 'email3@email.com', 3))
+            await sut.addNewReimb(new NewReimbursement(null, Date.now(), 'test', 1, 1, 2))
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }
     });
 
-    test('should return DataSaveError if given a conflict', async() => {
+    // test('should return DataSaveError if given a conflict', async() => {
 
-        expect.hasAssertions();
-        Validation.isValidObject=jest.fn().mockReturnValue(true);
-        mockRepo.getUserByUniqueKey = jest.fn().mockReturnValueOnce(1);
-
+    //     expect.hasAssertions();
+    //     Validation.isValidObject=jest.fn().mockReturnValue(true);
+    //     mockRepo.getUserByUniqueKey = jest.fn().mockReturnValueOnce(1);
         
-        try{
-            await sut.addNewUser(new NewUser(null, 'password', 'Three', 'Testerson', 'email3@email.com', 3))
-        } catch (e) {
-            expect(e instanceof DataPersistanceError).toBe(true);
-        }
-    });
+    //     try{
+    //         await sut.addNewReimb(new NewReimbursement(1, Date.now(), 'test', 1, 1, 2))
+    //     } catch (e) {
+    //         expect(e instanceof DataPersistanceError).toBe(true);
+    //     }
+    // });
 
-    test('should return true when deleteUserbyId is given valid User id', async() => {
-        expect.hasAssertions();
-        Validation.isValidNumber=jest.fn().mockReturnValue(true);
-        mockRepo.deleteById = jest.fn().mockReturnValue(true);
 
-        let result = await sut.deleteUserById(4);
-
-        expect(result).toBe(true);   
-    });
-
-    test('should return BadRequestError when deleteUserbyId is given bad number', async() => {
-        expect.hasAssertions();
-        Validation.isValidNumber=jest.fn().mockReturnValue(false);
-
-        try{
-            //@ts-ignore
-            await sut.deleteUserById('');
-        } catch (e) {
-            expect(e instanceof BadRequestError).toBe(true);
-        }  
-    });
-
-    test('should return true when updateUser is given valid User', async() => {
+    test('should return true when updateReimb is given valid Reimb', async() => {
         expect.hasAssertions();
         Validation.isValidObject = jest.fn().mockReturnValue(true);
-        mockRepo.updateById = jest.fn().mockReturnValue(mockUsers[4]);
+        mockRepo.updateById = jest.fn().mockReturnValue(mockReimbs[4]);
 
-        let result = await sut.updateUser(mockUsers[4]);
+        let result = await sut.updateReimb(mockReimbs[4]);
 
         expect(result).toBe(true);     
     });
 
-    test('should return BadRequestError when updateUser is given invalid object', async() => {
+    test('should return BadRequestError when updateReimb is given invalid object', async() => {
         expect.hasAssertions();
         Validation.isValidObject=jest.fn().mockReturnValue(false);
 
         try{
-            await sut.updateUser(new User(4, null, 'password', 'Three', 'Testerson', 'email3@email.com', '1'));
+            await sut.updateReimb(new Reimbursement(5, null, Date.now(), Date.now(), 'test 5', 1, 2, 'approved', 'other'));
         } catch (e) {
             expect(e instanceof BadRequestError).toBe(true);
         }  
     });
 
-    test('should return with BadRequest Error if authUser is given an invalid string for username', async() => {
-        expect.hasAssertions();
-        Validation.isValidString=jest.fn().mockRejectedValue(false);
+    test('should resolve to Reimb[] when getReimbByUserId() succesfully retrieves from the data source', async () => {
 
-        try{
-            await sut.authUser('','');
-        } catch (e) {
-            expect(e instanceof BadRequestError).toBe(true);
-        }
-    });
+        //arrange
+        expect.hasAssertions()
+        Validation.isValidNumber = jest.fn().mockReturnValue(false)
+        mockRepo.getReimbByUserId = jest.fn().mockReturnValue(mockReimbs)
+        //act
 
-    test('should resolve to User when authUser is given a valid username and password', async() => {
-        expect.hasAssertions();
-        Validation.isValidString = jest.fn().mockReturnValue(true);
+        let result = await sut.getReimbByUserId(1);
 
-        mockRepo.getUserByCreds = jest.fn().mockImplementation((un: string, pw: string) => {
-            return new Promise<User>((resolve) => resolve(mockUsers[0]));
-        });
-
-        let result = await sut.authUser('one', 'password');
-
+        //assert\
         expect(result).toBeTruthy();
-        expect(result.ers_user_id).toBe(1);
-        expect(result.username).toBe('one');
+        expect(result instanceof Array).toBe(true);
     });
 
 });

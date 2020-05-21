@@ -25,9 +25,6 @@ export class UserService {
 
     async getUserById(id: number): Promise<User> {
         
-        if(+id == NaN) {
-            throw new BadRequestError('getUserById was not given a valid number.')
-        }
         let user = await this.userRepo.getById(id);
 
         if(isEmptyObject(user)) {

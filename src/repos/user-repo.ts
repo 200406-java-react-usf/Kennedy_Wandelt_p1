@@ -22,7 +22,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getAll() in UserRepo.');
         } finally {
             client && client.release();
@@ -44,7 +44,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows[0] as User;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getById method in UserRepo.');
         } finally {
             client && client.release();
@@ -68,7 +68,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs2.rows[0] as User;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during save method in UserRepo.');
         } finally {
             client && client.release();
@@ -90,7 +90,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return true;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during deleteById method in UserRepo');
         } finally {
             client && client.release();
@@ -107,7 +107,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows[0] as User;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getUserByCreds method in UserRepo');
         } finally {
             client && client.release();
@@ -124,7 +124,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows.length;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getUserByUniqueKey in UserRepo');
         } finally {
             client && client.release();
@@ -141,7 +141,7 @@ export class UserRepo implements CrudRepository<User> {
 
             return rs.rows[0] as User;
         } catch (e) {
-            console.log(e);
+
             throw new InternalServerError('Error during getReimbByUserId method in ReimbRepo');
         } finally {
             client && client.release();
