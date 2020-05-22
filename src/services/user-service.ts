@@ -60,7 +60,7 @@ export class UserService {
     }
 
     async deleteUserById(id: number): Promise<boolean> {
-        if(!isValidNumber(+id)){
+        if(!isValidNumber(id)){
             throw new BadRequestError('Given input is not a valid number.');
         }
         let isDeleted = await this.userRepo.deleteById(id);
