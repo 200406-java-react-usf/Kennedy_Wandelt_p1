@@ -15,7 +15,7 @@ export class UserService {
     }
 
     /**
-     * calls UserRepo to get all users from data base, validates that returned value is not empty
+     * called UserRepo to get all users from data base, validates that returned value is not empty
      */
     async getAllUsers(): Promise<User[]> {
         let users = await this.userRepo.getAll();
