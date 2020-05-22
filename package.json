@@ -1,8 +1,8 @@
 {
-  "name": "kennedy_wandelt_p1_ui",
+  "name": "kennedy_wandelt_p1_api",
   "version": "1.0.0",
   "description": "Project 1",
-  "main": "index.js",
+  "main": "./build/index.js",
   "scripts": {
     "start": "node ./build/index.js",
     "dev-start": "tsc && node ./build/index.js",
