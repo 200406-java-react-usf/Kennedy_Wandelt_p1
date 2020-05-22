@@ -147,7 +147,6 @@ export class UserRepo implements CrudRepository<User> {
      */
     async updateById(user: User): Promise<User> {
         let client: PoolClient;
-
         try { 
             client = await connectionPool.connect();
             let sql = 'update ers_users set password = $1, first_name = $2, last_name = $3, user_role_id = $4, username = $5, email = $6 where ers_user_id = $7';
