@@ -11,6 +11,9 @@ export class ReimbService {
         this.reimbRepo = reimbRepo;
     }
 
+    /**
+     * calls ReimbRepo to get all REimbursements form the database, validates that the returned array is not empty
+     */
     async getAllReimbs(): Promise<Reimbursement[]> {
         let reimbs = await this.reimbRepo.getAll();
 
@@ -20,8 +23,13 @@ export class ReimbService {
         return reimbs;
     }
 
+
+    /**
+     * calls ReimbRepo to get a Reimbursement based on the provided id, validates that provied id is a valid number and that a non empty object is returned
+     * @param id - id of targetted reimbursement
+     */
     async getReimbById(id: number): Promise<Reimbursement> {
-        if(!isValidNumber(+id)){
+        if(!isValidNumber(id)){
             throw new BadRequestError('Provided id is not a number');
         }
 
@@ -33,6 +41,10 @@ export class ReimbService {
         return reimb;
     }
 
+    /**
+     * calls ReimbRepo to add provided reimbursement to the database, validates that object and its values are valid
+     * @param newReimb - reimbursement object to be added to database
+     */
     async addNewReimb(newReimb: NewReimbursement): Promise<Reimbursement> {
         
         if(!isValidObject(newReimb)) {
@@ -45,6 +57,10 @@ export class ReimbService {
     }
 
 
+    /**
+     * calls ReimbRepo to find reimbursements based on userId foreign key, validates that the provided id is a valid number and that array returned is not empty
+     * @param userId - target user Id to get searched for related reimbursements
+     */
     async getReimbByUserId(userId: number): Promise<Reimbursement[]> {
 
         if(!isValidNumber(userId)){
@@ -60,6 +76,10 @@ export class ReimbService {
         return myReimbs;
     }
 
+    /**
+     * calls ReimbRepo to update the reimbursement at the provided id calie, validates that the values are correct numbers 
+     * @param newReimb - reimbursement object to be updated at the provided id value
+     */
     async updateReimb(newReimb: Reimbursement): Promise<boolean> {
 
         if(!isValidObject(newReimb, 'resolved', 'resolver_id')){

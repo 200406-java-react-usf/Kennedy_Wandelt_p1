@@ -97,6 +97,11 @@ export class UserRepo implements CrudRepository<User> {
         }
     }
 
+    /**
+     * searches for users based on their username and password values 
+     * @param un -username which will be authenticated with password
+     * @param pass - password which will be authenticated with username
+     */
     async getUserByCreds(un: string, pass: string): Promise<User> {
         let client: PoolClient;
         try {
@@ -114,6 +119,11 @@ export class UserRepo implements CrudRepository<User> {
         }
     }
 
+    /**
+     * gets user by either email or username keys (unique keys)
+     * @param key - name of the key to be found by email or username are unique keys
+     * @param value - value at the specified key used to search
+     */
     async getUserByUniqueKey(key: string, value: string): Promise<number> {
         let client: PoolClient;
         try {
@@ -131,6 +141,10 @@ export class UserRepo implements CrudRepository<User> {
         }
     }
 
+    /**
+     * updates entire user object based on id which cannot be changed
+     * @param user - user to be updated determined by userid which cannot be changed
+     */
     async updateById(user: User): Promise<User> {
         let client: PoolClient;
 

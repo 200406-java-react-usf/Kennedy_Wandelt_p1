@@ -14,6 +14,9 @@ export class UserService {
         this.userRepo = userRepo;
     }
 
+    /**
+     * calls UserRepo to get all users from data base, validates that returned value is not empty
+     */
     async getAllUsers(): Promise<User[]> {
         let users = await this.userRepo.getAll();
 
@@ -23,6 +26,10 @@ export class UserService {
         return users;
     }
 
+    /**
+     * calls UserRepo to get a user by provided id, ensures that an object was recieved
+     * @param id - id by which user will be searched in data base
+     */
     async getUserById(id: number): Promise<User> {
         
         let user = await this.userRepo.getById(id);
@@ -33,6 +40,10 @@ export class UserService {
         return user;
     }
 
+    /**
+     * calls UserTrpo to add a user to the data base, validates is valid object and no conflicts in email or username keys
+     * @param newUser -new user object to be added to database
+     */
     async addNewUser(newUser: NewUser): Promise<User> {
 
         if(!isValidObject(newUser)) {
@@ -59,6 +70,10 @@ export class UserService {
         return user;
     }
 
+    /**
+     * calls UserRepo to delete a user by provided id, validates that id is a valid number
+     * @param id - id of user to be deleted
+     */
     async deleteUserById(id: number): Promise<boolean> {
         if(!isValidNumber(id)){
             throw new BadRequestError('Given input is not a valid number.');
@@ -68,6 +83,11 @@ export class UserService {
         return isDeleted;
     }
 
+    /**
+     * calls UserRepo to search database for a user with given username and password, validates that username and password are valid strings
+     * @param username - username to be authenticated
+     * @param password - password to be authenticated
+     */
     async authUser(username: string, password: string): Promise<User>{
         let authUser: User;
         
@@ -80,6 +100,10 @@ export class UserService {
         return (authUser);
     }
 
+    /**
+     * calls UserRepo to update the user obejct at the provided id with the provided user object, validates that object is valid
+     * @param user -user object to update the current object at that ers_user_id
+     */
     async updateUser(user: User): Promise<boolean>{
         
         if(!isValidObject(user)) {

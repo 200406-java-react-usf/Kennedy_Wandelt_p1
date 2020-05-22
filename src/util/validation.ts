@@ -26,6 +26,10 @@ export const isValidString = (...strs: string[]): boolean => {
     return (strs.filter(str => !str || typeof str !== 'string').length == 0);
 };
 
+/**
+ * returns true if the provided value is a number, returns false if it is NaN
+ * @param num - value to be validated
+ */
 export const isValidNumber = (num: number): boolean => {
     if(+num == NaN){
         return false;

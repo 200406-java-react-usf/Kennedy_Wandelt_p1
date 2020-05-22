@@ -73,7 +73,10 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         }
     }
   
-
+    /**
+     * gets array of reimbursements using a user id
+     * @param uId - user Id user to find reimbursements by user
+     */
     async getReimbByUserId(uId: number): Promise<Reimbursement[]>{
         let client: PoolClient;
         try {
@@ -92,6 +95,10 @@ export class ReimbRepo implements CrudRepository<Reimbursement> {
         }
     }
 
+    /**
+     * updates a reimbursement object in the data base (replaces all values)
+     * @param reimb -a reimbursement object incuding id to be updated
+     */
     async updateById(reimb: Reimbursement): Promise<Reimbursement> {
         let client: PoolClient;
         
